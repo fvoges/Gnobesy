@@ -5,9 +5,9 @@
 ##
 ## Version: 0.3.3
 ##
-## X-Curse-Packaged-Version: V0.2.0
-## X-Curse-Project-Name: GNOBESY
-## X-Curse-Project-ID: gnobesy
-## X-Curse-Repository-ID: wow/gnobesy/mainline
+## X-XCurse-Packaged-Version: V0.2.0
+## X-XCurse-Project-Name: GNOBESY
+## X-XCurse-Project-ID: gnobesy
+## X-XCurse-Repository-ID: wow/gnobesy/mainline
 Gnobesy.lua
 Gnobesy.xml
