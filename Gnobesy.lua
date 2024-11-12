@@ -401,7 +401,8 @@ function GNOBESY_MainFrame_OnEvent(self, event, arg)
         end
 
     elseif event == "VARIABLES_LOADED" then
-        InterfaceOptions_AddCategory(GNOBESY_OptionsPanel);
+        local category = Settings.RegisterCanvasLayoutCategory(self, self.name)
+        Settings.RegisterAddOnCategory(category)
     end
 end
 
