@@ -1,25 +1,69 @@
-# Gnobesy guild bank addon
+# Gnobesy - Guild Bank Made Easy
 
-> **NOTE:** This is a fork of the addon. It incorporates some fixes from a pull request in the original repository, and updates to the TOC so that WoW doesn't complain about being out of date.
->
-> I'm not an addon developer, if you find a bug, submit a pull request, and I'll review it and merge it. But don't expect me to fix any bugs/issues.
->
-> I will ignore all complains.
+> **Fork Info:** This is a community-maintained fork that keeps the addon working with current WoW versions. Found a bug? Pull requests are welcome! I maintain this in my spare time for the WoW community.
 
-NEW! Congratulations on acquiring Gnobesy: the GNOmish guild Bank Enhancement SYstem.
+Tired of messy guild bank tabs? Gnobesy sorts them out for you! It's a handy guild bank enhancement that adds sorting and quick access to guild controls.
 
-This is a new Guild Bank sort addon, that will also include some other enhancements. Currently you can sort (regular or reverse) or quickly reach the Guild Control panel from the bank, where you can change bank permissions.
+## Installation
 
-This is a new release, and I expect to push out some more updates very quickly.
+**Download:** Get the current version from [Wago](https://addons.wago.io/addons/gnobesy) or [GitHub Releases](https://github.com/fvoges/Gnobesy/releases)
 
-To support this addon:
+**Install:** 
+1. Download and extract to your `World of Warcraft\_retail_\Interface\AddOns` folder
+2. Restart WoW
+3. Open your guild bank to see the new sorting buttons
 
-let me know in the comments if you enjoy it, and any suggestions you might have
-but also let me know if you don't, and what might improve it
-or you can buy me a drink if you like
+**Compatibility:** Works with WoW 11.0.2+ (Interface 110200)
 
-Roadmap:
+## What it does
 
-- add methods to detect the closing the of guild bank window, abort when that happens
-- investigate possibly integrating with other addons like TSM - to help quickly identify items that may sell well in the AH
-- more fun!
+- **Sort guild bank tabs** - Organize items in ascending or descending order
+- **Quick guild controls** - Fast access to Guild Control panel for permission changes
+- **Smart sorting** - Handles different item types and stacks intelligently
+- **Progress feedback** - Visual progress indication during sorting operations
+- **Permission integration** - Works with your guild's existing permission system
+
+## How to use
+
+1. **Open your guild bank** - You'll see new sorting buttons added to the interface
+2. **Choose sort direction** - Click "Sort" for ascending or "Sort Reverse" for descending order
+3. **Access guild controls** - Quick button to jump to guild management panel
+4. **Cancel if needed** - Stop sorting operation mid-process if something goes wrong
+
+## Features in detail
+
+**Smart Sorting Algorithm:**
+- Groups similar items together
+- Handles stackable items properly  
+- Respects item quality and type
+- Works with all guild bank tabs you have access to
+
+**Guild Integration:**
+- Respects your guild bank permissions
+- Quick access to permission management
+- Works with existing guild bank addons
+
+**User-Friendly:**
+- Visual progress indication
+- Ability to cancel long operations
+- Clean, unobtrusive interface additions
+
+## Roadmap
+
+- Detection for guild bank window closing (abort operations automatically)
+- Integration with auction house addons like TSM for item value sorting
+- More sorting options and customization
+
+## Bug Reports
+
+Found an issue? Please report it via [GitHub Issues](https://github.com/fvoges/Gnobesy/issues) or submit a pull request if you can fix it!
+
+## Credits
+
+Gnobesy is the **GN**omish guild bank **E**nhancement **SY**stem - because gnomes make the best guild bank organizers! 
+
+Original concept and development by the WoW addon community.
+
+## Historical Links
+
+[Original CurseForge Page](https://www.curseforge.com/wow/addons/gnobesy) (unmaintained) | [Original WoWInterface Page](https://www.wowinterface.com/downloads/info25066-Gnobesy.html) (unmaintained)
