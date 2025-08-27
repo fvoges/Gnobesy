@@ -1,5 +1,32 @@
 local guildBankOpen = false;
-local GNOBESY_VERSION = "0.3.2";
+
+-- Dynamic version detection (matches TOC metadata)
+local function GetAddonVersion()
+    local version = C_AddOns.GetAddOnMetadata("Gnobesy", "Version")
+    local packagedVersion = C_AddOns.GetAddOnMetadata("Gnobesy", "X-XCurse-Packaged-Version")
+    
+    return packagedVersion or version or "Development Build"
+end
+
+local GNOBESY_VERSION = GetAddonVersion();
+
+-- Backward compatibility for container APIs
+local PickupContainerItem = C_Container and C_Container.PickupContainerItem or _G.PickupContainerItem
+
+-- Wrapper for GetContainerItemInfo to handle API change
+local function GetContainerItemInfo(bagID, slotID)
+    if C_Container and C_Container.GetContainerItemInfo then
+        local itemInfo = C_Container.GetContainerItemInfo(bagID, slotID)
+        if itemInfo then
+            return itemInfo.iconFileID, itemInfo.stackCount, itemInfo.isLocked, itemInfo.quality, 
+                   itemInfo.isReadable, itemInfo.hasLoot, itemInfo.hyperlink, itemInfo.isFiltered, 
+                   itemInfo.hasNoValue, itemInfo.itemID
+        end
+        return nil
+    else
+        return _G.GetContainerItemInfo(bagID, slotID)
+    end
+end
 
 local MAX_GUILDBANK_SLOTS_PER_TAB = 98;
 
@@ -282,7 +309,12 @@ function GNOBESY_SlashCommand(cmd, arg2)
     if cmd == "gbank" then
         GuildBankSortButton(nil);
     else
-        InterfaceOptionsFrame_OpenToCategory(GNOBESY_TITLE);
+        -- Use modern Settings API with backward compatibility
+        if Settings and Settings.OpenToCategory then
+            Settings.OpenToCategory("Gnobesy")
+        elseif InterfaceOptionsFrame_OpenToCategory then
+            InterfaceOptionsFrame_OpenToCategory(GNOBESY_TITLE)
+        end
     end
 end
 
