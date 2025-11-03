@@ -1,0 +1,72 @@
+version: '3'
+
+vars:
+  TOC_FILE: Gnobesy.toc
+  ADDON_NAME: Gnobesy
+
+tasks:
+  changelog:
+    desc: Generate CHANGELOG.md from conventional commits
+    cmds:
+      - conventional-changelog -p angular -i CHANGELOG.md -s
+
+  bump-interface:
+    desc: Update Interface version in TOC file
+    cmds:
+      - sed -i 's/^## Interface:.*/## Interface: {{.INTERFACE}}/' {{.TOC_FILE}}
+    vars:
+      INTERFACE: '110205'
+
+  bump-version:
+    desc: Update addon version in TOC file
+    cmds:
+      - sed -i 's/^## Version:.*/## Version: {{.VERSION}}/' {{.TOC_FILE}}
+    requires:
+      vars: [VERSION]
+
+  release:
+    desc: Full release process (bump version, changelog, commit, tag)
+    deps: [bump-interface]
+    cmds:
+      - task: bump-version
+        vars: {VERSION: '{{.VERSION}}'}
+      - task: changelog
+      - git add {{.TOC_FILE}} CHANGELOG.md
+      - git commit -m "chore(release): {{.VERSION}}"
+      - git tag v{{.VERSION}}
+      - echo "Release v{{.VERSION}} created. Push with git push --follow-tags origin main"
+    requires:
+      vars: [VERSION]
+
+  release:patch:
+    desc: Release patch version (auto-increment)
+    cmds:
+      - task: release
+        vars: {VERSION: '{{.NEXT_PATCH}}'}
+    vars:
+      CURRENT:
+        sh: grep "^## Version:" {{.TOC_FILE}} | awk '{print $3}'
+      NEXT_PATCH:
+        sh: echo "{{.CURRENT}}" | awk -F. '{print $1"."$2"."$3+1}'
+
+  release:minor:
+    desc: Release minor version (auto-increment)
+    cmds:
+      - task: release
+        vars: {VERSION: '{{.NEXT_MINOR}}'}
+    vars:
+      CURRENT:
+        sh: grep "^## Version:" {{.TOC_FILE}} | awk '{print $3}'
+      NEXT_MINOR:
+        sh: echo "{{.CURRENT}}" | awk -F. '{print $1"."$2+1".0"}'
+
+  release:major:
+    desc: Release major version (auto-increment)
+    cmds:
+      - task: release
+        vars: {VERSION: '{{.NEXT_MAJOR}}'}
+    vars:
+      CURRENT:
+        sh: grep "^## Version:" {{.TOC_FILE}} | awk '{print $3}'
+      NEXT_MAJOR:
+        sh: echo "{{.CURRENT}}" | awk -F. '{print $1+1".0.0"}'

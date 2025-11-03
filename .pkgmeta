@@ -1,0 +1,7 @@
+ignore:
+  - Taskfile.yml
+  - .clrc
+  - CLAUDE.md
+  - .github
+  - .gitignore
+  - .gitattributes
