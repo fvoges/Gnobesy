@@ -3,7 +3,7 @@
 ## Notes: Guild Bank Sorting Addon and More
 ## SavedVariablesPerCharacter: GNOBESY
 ##
-## Version: 0.4.1
+## Version: 0.4.2
 ##
 ## X-XCurse-Packaged-Version: V0.4.1
 ## X-XCurse-Project-Name: GNOBESY

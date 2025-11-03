@@ -1,3 +1,16 @@
+# [0.4.2] (2025-01-03)
+
+## Interface Update for WoW 11.2.5
+
+### Maintenance
+
+* **release:** add release automation and update for WoW 11.2.5 ([0350330](https://github.com/fvoges/Gnobesy/commit/0350330))
+  - Update Interface version 110200 -> 110205 (WoW 11.2.5)
+  - Add Taskfile.yml for automated releases with conventional-changelog
+  - Add .clrc for changelog configuration
+  - Add .pkgmeta to exclude dev files from packaged releases
+  - Remove deprecated generate_changelog.sh script
+
 # [0.4.1] (2024-12-27)
 
 ## Interface Update for WoW 11.0.2+
