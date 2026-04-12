@@ -1,11 +1,11 @@
-## Interface: 110205
+## Interface: 120001
 ## Title: GNOBESY - Guild Bank Enhancement System (a.k.a "Goblesy")
 ## Notes: Guild Bank Sorting Addon and More
 ## SavedVariablesPerCharacter: GNOBESY
 ##
-## Version: 0.4.2
+## Version: 0.4.3
 ##
-## X-XCurse-Packaged-Version: V0.4.1
+## X-XCurse-Packaged-Version: 0.4.3
 ## X-XCurse-Project-Name: GNOBESY
 ## X-XCurse-Project-ID: gnobesy
 ## X-XCurse-Repository-ID: wow/gnobesy/mainline

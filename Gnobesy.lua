@@ -1,4 +1,6 @@
 local guildBankOpen = false;
+local GUILD_BANK_INTERACTION_TYPE = Enum and Enum.PlayerInteractionType and Enum.PlayerInteractionType.GuildBank or 10
+local settingsCategory
 
 -- Dynamic version detection (matches TOC metadata)
 local function GetAddonVersion()
@@ -37,6 +39,36 @@ local t = 0;
 local interval = 0.01;
 local current = nil;
 local buttons = {};
+
+local function RegisterOptionsCategory()
+    local panel = _G["GNOBESY_OptionsPanel"]
+    if not panel or settingsCategory then
+        return
+    end
+
+    if Settings and Settings.RegisterCanvasLayoutCategory then
+        settingsCategory = Settings.RegisterCanvasLayoutCategory(panel, panel.name or GNOBESY_TITLE, panel.name or GNOBESY_TITLE)
+        Settings.RegisterAddOnCategory(settingsCategory)
+        panel.category = settingsCategory
+    elseif InterfaceOptions_AddCategory then
+        InterfaceOptions_AddCategory(panel)
+    end
+end
+
+local function OpenOptionsCategory()
+    RegisterOptionsCategory()
+
+    if Settings and Settings.OpenToCategory then
+        local categoryID = settingsCategory and ((settingsCategory.GetID and settingsCategory:GetID()) or settingsCategory.ID)
+        if categoryID then
+            Settings.OpenToCategory(categoryID)
+        else
+            Settings.OpenToCategory(GNOBESY_TITLE or "Gnobesy")
+        end
+    elseif InterfaceOptionsFrame_OpenToCategory then
+        InterfaceOptionsFrame_OpenToCategory(_G["GNOBESY_OptionsPanel"] or GNOBESY_TITLE)
+    end
+end
 
 local function GetIDFromLink(link)
     if link and link:find("\124Hbattlepet:") then -- caged battle pets all share a single itemid
@@ -309,12 +341,7 @@ function GNOBESY_SlashCommand(cmd, arg2)
     if cmd == "gbank" then
         GuildBankSortButton(nil);
     else
-        -- Use modern Settings API with backward compatibility
-        if Settings and Settings.OpenToCategory then
-            Settings.OpenToCategory("Gnobesy")
-        elseif InterfaceOptionsFrame_OpenToCategory then
-            InterfaceOptionsFrame_OpenToCategory(GNOBESY_TITLE)
-        end
+        OpenOptionsCategory()
     end
 end
 
@@ -394,10 +421,15 @@ end
 local function hook_GuildBankTab_OnClick(...)
 
     local tab = GetCurrentGuildBankTab();
+    local sortButton = _G["GBankFrameSortButton"]
+    if not sortButton then
+        return
+    end
+
     if tab > GetNumGuildBankTabs() then
-        _G["GBankFrameSortButton"]:Disable();
+        sortButton:Disable();
     else
-        _G["GBankFrameSortButton"]:Enable();
+        sortButton:Enable();
     end
 end
 
@@ -408,7 +440,7 @@ local function GuildUIBankPermissionsTab()
 end
 
 function GNOBESY_MainFrame_OnEvent(self, event, arg)
-    if event == "PLAYER_INTERACTION_MANAGER_FRAME_SHOW" and arg == 10 then
+    if event == "PLAYER_INTERACTION_MANAGER_FRAME_SHOW" and arg == GUILD_BANK_INTERACTION_TYPE then
         if guildBankOpen == false then
             guildBankOpen = true;
             local gbframe = _G["GuildBankFrame"];
@@ -424,17 +456,26 @@ function GNOBESY_MainFrame_OnEvent(self, event, arg)
         end
 
         -- show the button
+        local sortButton = _G["GBankFrameSortButton"]
+        local guildControlButton = _G["GuildControlButton"]
         if GNOBESY.IsEnabled == true then
-            _G["GBankFrameSortButton"]:Show();
-            _G["GuildControlButton"]:Show();
+            if sortButton then
+                sortButton:Show();
+            end
+            if guildControlButton then
+                guildControlButton:Show();
+            end
         else
-            _G["GBankFrameSortButton"]:Hide();
-            _G["GuildControlButton"]:Hide();
+            if sortButton then
+                sortButton:Hide();
+            end
+            if guildControlButton then
+                guildControlButton:Hide();
+            end
         end
 
     elseif event == "VARIABLES_LOADED" then
-        local category = Settings.RegisterCanvasLayoutCategory(self, self.name)
-        Settings.RegisterAddOnCategory(category)
+        RegisterOptionsCategory()
     end
 end
 
@@ -521,6 +562,9 @@ function GNOBESY_OptionsPanel_OnLoad(panel)
     panel.cancel = GNOBESY_OptionsPanel_OnCancel;
     panel.default = GNOBESY_OptionsPanel_OnDefault;
     panel.refresh = GNOBESY_OptionsPanel_OnRefresh;
+    if settingsCategory then
+        panel.category = settingsCategory
+    end
     GNOBESY_OptionsPanel_OnCancel();
 end
 
