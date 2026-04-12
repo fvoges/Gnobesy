@@ -12,10 +12,27 @@ tasks:
         sh: "grep '^## Version:' {{.TOC_FILE}} | awk '{print $3}'"
     cmds:
       - |
-        tmp="$(mktemp)"
-        trap 'rm -f "$tmp"' EXIT
-        printf '{\n  "name": "%s",\n  "version": "%s"\n}\n' "{{.ADDON_NAME}}" "{{.CURRENT_VERSION}}" > "$tmp"
-        conventional-changelog -p angular -i CHANGELOG.md -s -k "$tmp"
+        tmp_pkg="$(mktemp)"
+        tmp_release="$(mktemp)"
+        tmp_existing="$(mktemp)"
+        trap 'rm -f "$tmp_pkg" "$tmp_release" "$tmp_existing" "$tmp_existing.filtered"' EXIT
+        printf '{\n  "name": "%s",\n  "version": "%s"\n}\n' "{{.ADDON_NAME}}" "{{.CURRENT_VERSION}}" > "$tmp_pkg"
+        conventional-changelog -n changelog.config.cjs -k "$tmp_pkg" -r 1 > "$tmp_release"
+        awk 'BEGIN {capture = 0} /^## \[/ {capture = 1} capture {print}' CHANGELOG.md > "$tmp_existing"
+        awk -v version="{{.CURRENT_VERSION}}" '
+          BEGIN {skip = 0}
+          $0 ~ ("^## \\[" version "\\]") {skip = 1; next}
+          /^## \[/ && skip == 1 {skip = 0}
+          skip == 0 {print}
+        ' "$tmp_existing" > "$tmp_existing.filtered"
+        {
+          printf '# {{.ADDON_NAME}} Changelog\n\nAll notable changes to this project will be documented in this file.\n\n'
+          cat "$tmp_release"
+          if [ -s "$tmp_existing.filtered" ]; then
+            printf '\n'
+            cat "$tmp_existing.filtered"
+          fi
+        } > CHANGELOG.md
 
   bump-interface:
     desc: Update Interface version in TOC file
