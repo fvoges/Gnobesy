@@ -1,13 +1,12 @@
-## [0.4.3](https://github.com/fvoges/Gnobesy/compare/0.4.2...0.4.3) (2026-04-12)
+# Gnobesy Changelog
 
+All notable changes to this project will be documented in this file.
+
+## [0.4.3](https://github.com/fvoges/Gnobesy/compare/0.4.2...0.4.3) (2026-04-12)
 
 ### Bug Fixes
 
 * **compat:** update guild bank UI for WoW 12.0.1 ([c346bc5](https://github.com/fvoges/Gnobesy/commit/c346bc56ae4e650dd9061890c9100d5d8048d3a8))
-* **release:** generate versioned changelog output ([714987d](https://github.com/fvoges/Gnobesy/commit/714987d05607e162c61eec9abbe24cd86d41a64e))
-* **release:** remove v prefix from git tags (WoW addon convention) ([1954113](https://github.com/fvoges/Gnobesy/commit/1954113cbaddfb8c6028f579ac8f45e10d9a4675))
-
-
 
 # [0.4.2] (2025-01-03)
 
