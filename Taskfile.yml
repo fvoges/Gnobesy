@@ -7,8 +7,15 @@ vars:
 tasks:
   changelog:
     desc: Generate CHANGELOG.md from conventional commits
+    vars:
+      CURRENT_VERSION:
+        sh: "grep '^## Version:' {{.TOC_FILE}} | awk '{print $3}'"
     cmds:
-      - conventional-changelog -p angular -i CHANGELOG.md -s
+      - |
+        tmp="$(mktemp)"
+        trap 'rm -f "$tmp"' EXIT
+        printf '{\n  "name": "%s",\n  "version": "%s"\n}\n' "{{.ADDON_NAME}}" "{{.CURRENT_VERSION}}" > "$tmp"
+        conventional-changelog -p angular -i CHANGELOG.md -s -k "$tmp"
 
   bump-interface:
     desc: Update Interface version in TOC file
