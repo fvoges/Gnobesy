@@ -13,7 +13,7 @@ Tired of messy guild bank tabs? Gnobesy sorts them out for you! It's a handy gui
 2. Restart WoW
 3. Open your guild bank to see the new sorting buttons
 
-**Compatibility:** Works with WoW 11.0.2+ (Interface 110200)
+**Compatibility:** Works with WoW 12.0.1+ (Interface 120001)
 
 ## What it does
 
